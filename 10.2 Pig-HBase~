@@ -1,0 +1,47 @@
+Loading data from HDFS to HBase using pig:
+
+setp 1:First load below data into HDFS :
+
+101,Amitabh,20000,1
+102,Shahrukh,10000,2
+103,Akshay,11000,3
+104,Anubhav,5000,4
+105,Pawan,2500,5
+106,Aamir,25000,1
+107,Salman,17500,2
+108,Ranbir,14000,3
+109,Katrina,1000,4
+110,Priyanka,2000,5
+111,Tushar,500,1
+112,Ajay,5000,2
+113,Jubeen,1000,1
+114,Madhuri,2000,2
+
+
+
+step 2:
+
+Open Hbase shell and create a table EMployee with column family Emp_data
+
+create 'Employee', 'emp_data'
+
+step 3: open pig grunt shell in mapreduce mode 
+
+
+step 4: Load the file into a relation - 'data'
+
+data = LOAD '/ToHBase_from_pig' USING PigStorage(',') as (id:int, name:chararray, sal:int, rating:int);
+
+Step 5: Store the relation data into HBase table  - Employee.
+
+STORE data INTO 'hbase://Employee' using org.apache.pig.backend.hadoop.hbase.HBaseStorage('emp_data:id, emp_data:name,emp_data:sal, emp_data:rating');
+
+we get the success message like :
+
+Output(s):
+Successfully stored 14 records in: "hbase://Employee"
+
+
+
+
+
